@@ -1,4 +1,6 @@
 
+[![GoDoc](https://godoc.org/toolman.org/file/viminfo?status.svg)](https://godoc.org/toolman.org/file/viminfo)  [![Go Report Card](https://goreportcard.com/badge/toolman.org/file/viminfo)](https://goreportcard.com/report/toolman.org/file/viminfo)
+
 # viminfo
 `import "toolman.org/file/viminfo"`
 
