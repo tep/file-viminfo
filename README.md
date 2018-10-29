@@ -1,5 +1,5 @@
 
-[![GoDoc](https://godoc.org/toolman.org/file/viminfo?status.svg)](https://godoc.org/toolman.org/file/viminfo)  [![Go Report Card](https://goreportcard.com/badge/toolman.org/file/viminfo)](https://goreportcard.com/report/toolman.org/file/viminfo)
+[![GoDoc](https://godoc.org/toolman.org/file/viminfo?status.svg)](https://godoc.org/toolman.org/file/viminfo)  [![Go Report Card](https://goreportcard.com/badge/toolman.org/file/viminfo)](https://goreportcard.com/report/toolman.org/file/viminfo) [![Build Status](https://travis-ci.org/tep/file-viminfo.svg?branch=master)](https://travis-ci.org/tep/file-viminfo)
 
 # viminfo
 `import "toolman.org/file/viminfo"`
