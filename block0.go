@@ -25,13 +25,16 @@ package viminfo
 import (
 	"bytes"
 	"encoding/binary"
+	"errors"
 	"os"
 )
 
 type block0 []byte
 
-// As defined by MIN_SWAP_PAGE_SIZE in vim.h (as of v8.1.0500)
-const block0Size = 1048
+const (
+	block0Size   = 1048 // As defined by MIN_SWAP_PAGE_SIZE in vim.h (as of v8.1.0500)
+	readBuffSize = 2048
+)
 
 func readBlock0(filename string) (block0, error) {
 	f, err := os.Open(filename)
@@ -40,13 +43,18 @@ func readBlock0(filename string) (block0, error) {
 	}
 	defer f.Close()
 
-	b0 := make([]byte, block0Size)
+	b0 := make([]byte, readBuffSize)
 
-	if _, err := f.Read(b0); err != nil {
+	i, err := f.Read(b0)
+	if err != nil {
 		return nil, err
 	}
 
-	return block0(b0), nil
+	if i < block0Size {
+		return nil, errors.New("short read of block 0")
+	}
+
+	return block0(b0[:block0Size]), nil
 }
 
 func (b0 block0) frontString(offset, length int) string {
