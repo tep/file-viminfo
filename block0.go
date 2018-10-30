@@ -25,6 +25,7 @@ package viminfo
 import (
 	"bytes"
 	"encoding/binary"
+	"io"
 	"os"
 )
 
@@ -40,18 +41,16 @@ func readBlock0(filename string) (block0, error) {
 	}
 	defer f.Close()
 
-	b0 := make([]byte, block0Size)
-
-	if _, err := f.Read(b0); err != nil {
-		return nil, err
-	}
-
-	return block0(b0), nil
+	var b0 [block0Size]byte
+	// The biggest offset we use is 1008, and read an uint64 from it,
+	// so we need at least 1008+8 bytes.
+	n, err := io.ReadAtLeast(f, b0[:], 1008+8)
+	return b0[:n], err
 }
 
 func (b0 block0) frontString(offset, length int) string {
 	b := b0[offset : offset+length]
-	if i := bytes.Index(b, []byte{0}); i >= 0 {
+	if i := bytes.IndexByte(b, 0); i >= 0 {
 		b = b[:i]
 	}
 	return string(b)
@@ -59,7 +58,7 @@ func (b0 block0) frontString(offset, length int) string {
 
 func (b0 block0) backString(offset, length int) string {
 	b := b0[offset : offset+length]
-	if i := bytes.LastIndex(b, []byte{0}); i >= 0 {
+	if i := bytes.LastIndexByte(b, 0); i >= 0 {
 		b = b[i+1:]
 	}
 	return string(b)

@@ -20,16 +20,24 @@
 // IN THE SOFTWARE.
 //
 
-package viminfo
+package viminfo_test
 
 import (
 	"reflect"
 	"testing"
 	"time"
+
+	"toolman.org/file/viminfo"
 )
 
 func TestVimInfo(t *testing.T) {
-	want := &VimInfo{
+	if _, err := viminfo.Parse("testdata/plain-short.swp"); err == nil {
+		t.Error("wanted short read, got nil")
+	} else {
+		t.Log("short read:", err)
+	}
+
+	want := &viminfo.VimInfo{
 		Version:  "VIM 7.4",
 		LastMod:  time.Unix(1540822648, 0),
 		Inode:    272982037,
@@ -38,15 +46,15 @@ func TestVimInfo(t *testing.T) {
 		Hostname: "droog.toolman.org",
 		Filename: "~tep/working/go/src/experiments/read-vim-swapfile/main.go",
 		Encoding: "utf-8",
-		Crypto:   CMnone,
-		Format:   FFunix,
+		Crypto:   viminfo.CMnone,
+		Format:   viminfo.FFunix,
 		Modified: false,
 		SameDir:  true,
 	}
 
 	file := "testdata/plain.swp"
 
-	if got, err := Parse(file); err != nil || !reflect.DeepEqual(got, want) {
+	if got, err := viminfo.Parse(file); err != nil || !reflect.DeepEqual(got, want) {
 		t.Errorf("Parse(%q) := (%#v, %v); Wanted (%#v, %v)", file, got, err, want, nil)
 	}
 }
