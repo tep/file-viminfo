@@ -41,11 +41,11 @@ func readBlock0(filename string) (block0, error) {
 	}
 	defer f.Close()
 
-	var b0 [block0Size]byte
+	b0 := make([]byte, block0Size)
 	// The biggest offset we use is 1008, and read an uint64 from it,
 	// so we need at least 1008+8 bytes.
-	n, err := io.ReadAtLeast(f, b0[:], 1008+8)
-	return b0[:n], err
+	_, err = io.ReadFull(f, b0)
+	return b0, err
 }
 
 func (b0 block0) frontString(offset, length int) string {
