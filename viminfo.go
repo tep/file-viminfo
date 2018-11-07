@@ -25,6 +25,7 @@ package viminfo // import "toolman.org/file/viminfo"
 
 import (
 	"errors"
+	"path/filepath"
 	"time"
 )
 
@@ -34,6 +35,8 @@ const (
 
 // VimInfo reflects the meta-data stored in a vim swapfile
 type VimInfo struct {
+	// SwapFile is the name of the file containing this information
+	SwapFile string
 	// Version indicates which version of Vim wrote this swap file
 	Version string
 	// LastMod is the modification time for the file being edited
@@ -95,6 +98,7 @@ func Parse(filename string) (*VimInfo, error) {
 	}
 
 	vi := &VimInfo{
+		SwapFile: filepath.Clean(filename),
 		Version:  b0.frontString(2, 8),
 		LastMod:  time.Unix(int64(b0.uint32At(16)), 0),
 		Inode:    b0.uint32At(20),
