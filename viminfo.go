@@ -25,6 +25,7 @@ package viminfo // import "toolman.org/file/viminfo"
 
 import (
 	"errors"
+	"path/filepath"
 	"time"
 )
 
@@ -34,30 +35,32 @@ const (
 
 // VimInfo reflects the meta-data stored in a vim swapfile
 type VimInfo struct {
+	// SwapFile is the name of the file containing this information
+	SwapFile string `json:"swap_file,omitempty"`
 	// Version indicates which version of Vim wrote this swap file
-	Version string
+	Version string `json:"version,omitempty"`
 	// LastMod is the modification time for the file being edited
-	LastMod time.Time
+	LastMod time.Time `json:"last_mod,omitempty"`
 	// Inode is the filesystem inode of the file being edited
-	Inode uint32
+	Inode uint32 `json:"inode,omitempty"`
 	// PID is the process ID for the vim session editing the file
-	PID uint32
+	PID uint32 `json:"pid,omitempty"`
 	// User is the username for the vim session's process owner (or, UID of username is unavailable)
-	User string
+	User string `json:"user,omitempty"`
 	// Hostname is the hostname where the vim session is/was running
-	Hostname string
+	Hostname string `json:"hostname,omitempty"`
 	// Filename reflects the name of the file being edited
-	Filename string
+	Filename string `json:"filename,omitempty"`
 	// Encoding is the file encoding for the file being edited (or, the word "encrypted" if the file is encrypted)
-	Encoding string
+	Encoding string `json:"encoding,omitempty"`
 	// Crypto indicates the "cryptmethod" for the file being edited (or, "plaintext" if the file is not encrypted)
-	Crypto CryptMethod
+	Crypto CryptMethod `json:"crypt_method,omitempty"`
 	// Format is the FileFormat for the edited file (e.g. unix, dos, mac)
-	Format FileFormat
+	Format FileFormat `json:"format,omitempty"`
 	// Modified indicates whether the edit session has unsaved changes
-	Modified bool
+	Modified bool `json:"modified"`
 	// SameDir indicates whether the edited file is in the same directory as the swap file
-	SameDir bool
+	SameDir bool `json:"same_dir"`
 }
 
 // Parse reads and parses the vim swapfile specified by filename and returns
@@ -95,6 +98,7 @@ func Parse(filename string) (*VimInfo, error) {
 	}
 
 	vi := &VimInfo{
+		SwapFile: filepath.Clean(filename),
 		Version:  b0.frontString(2, 8),
 		LastMod:  time.Unix(int64(b0.uint32At(16)), 0),
 		Inode:    b0.uint32At(20),

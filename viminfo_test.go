@@ -29,7 +29,10 @@ import (
 )
 
 func TestVimInfo(t *testing.T) {
+	file := "testdata/plain.swp"
+
 	want := &VimInfo{
+		SwapFile: file,
 		Version:  "VIM 7.4",
 		LastMod:  time.Unix(1540822648, 0),
 		Inode:    272982037,
@@ -43,8 +46,6 @@ func TestVimInfo(t *testing.T) {
 		Modified: false,
 		SameDir:  true,
 	}
-
-	file := "testdata/plain.swp"
 
 	if got, err := Parse(file); err != nil || !reflect.DeepEqual(got, want) {
 		t.Errorf("Parse(%q) := (%#v, %v); Wanted (%#v, %v)", file, got, err, want, nil)

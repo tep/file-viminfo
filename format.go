@@ -22,6 +22,11 @@
 
 package viminfo
 
+import (
+	"errors"
+	"strings"
+)
+
 // FileFormat indicates the EOL token for an edited file
 type FileFormat byte
 
@@ -44,4 +49,24 @@ func (ff FileFormat) String() string {
 	default:
 		return "unknown"
 	}
+}
+
+func (ff *FileFormat) MarshalText() ([]byte, error) {
+	return []byte(ff.String()), nil
+}
+
+var ErrUnknownFileFormat = errors.New("unknown file format")
+
+func (ff *FileFormat) UnmarshalText(data []byte) error {
+	switch strings.ToLower(string(data)) {
+	case "unix":
+		*ff = FFunix
+	case "dos":
+		*ff = FFdos
+	case "mac":
+		*ff = FFmac
+	default:
+		return ErrUnknownFileFormat
+	}
+	return nil
 }

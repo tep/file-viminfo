@@ -22,6 +22,11 @@
 
 package viminfo
 
+import (
+	"errors"
+	"strings"
+)
+
 // CryptMethod is a vim crypto method
 type CryptMethod byte
 
@@ -46,4 +51,26 @@ func (cm CryptMethod) String() string {
 	default:
 		return ""
 	}
+}
+
+func (cm *CryptMethod) MarshalText() ([]byte, error) {
+	return []byte(cm.String()), nil
+}
+
+var ErrUnknownCryptMethod = errors.New("unknown crypt method")
+
+func (cm *CryptMethod) UnmarshalText(data []byte) error {
+	switch strings.ToLower(string(data)) {
+	case "plaintext":
+		*cm = CMnone
+	case "zip":
+		*cm = CMzip
+	case "blowfish":
+		*cm = CMblowfish
+	case "blowfish2":
+		*cm = CMblowfish2
+	default:
+		return ErrUnknownCryptMethod
+	}
+	return nil
 }
