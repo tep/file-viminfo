@@ -69,7 +69,7 @@ func isVim(pid uint32) error {
 		return err
 	}
 
-	if ok, err := filepath.Match("vim.*", cmd); err != nil && ok {
+	if ok, err := filepath.Match("vim.*", cmd); err == nil && ok {
 		return nil
 	}
 
