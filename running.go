@@ -40,6 +40,15 @@ var (
 	VimCommands = []string{"ex", "vi", "vim", "gvim", "view", "gview", "vimdiff"}
 )
 
+func IsFatal(err error) bool {
+	switch err {
+	case ErrNoSuchProcess, ErrNotThisHost, ErrNotVim:
+		return false
+	default:
+		return true
+	}
+}
+
 func (vi *VimInfo) Running() error {
 	if vi.PID == 0 {
 		return ErrNoPID
