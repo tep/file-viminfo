@@ -26,9 +26,13 @@ import (
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/kr/pretty"
 )
 
 func TestVimInfo(t *testing.T) {
+	defer func(s func() (os.FileInfo, err)) { osStat = s }(osStat)
+
 	file := "testdata/plain.swp"
 
 	want := &VimInfo{
@@ -49,5 +53,11 @@ func TestVimInfo(t *testing.T) {
 
 	if got, err := Parse(file); err != nil || !reflect.DeepEqual(got, want) {
 		t.Errorf("Parse(%q) := (%#v, %v); Wanted (%#v, %v)", file, got, err, want, nil)
+		for _, d := range pretty.Diff(got, want) {
+			t.Log(d)
+		}
 	}
+}
+
+func fakeFileInfo struct {
 }

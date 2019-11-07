@@ -66,11 +66,13 @@ func inspector() (*vsInspector, error) {
 	fs := pflag.NewFlagSet(name, pflag.ContinueOnError)
 
 	var (
-		query  = fs.StringP("query", "q", "all", "Query statement used for selecting output")
+		query  = fs.StringP("query", "q", "all", "viql statement for filtering output")
 		format = fs.StringP("format", "f", "{{.SwapFile}}", "Output format for VimInfo as a text/template")
-		zero   = fs.BoolP("zero", "0", false, "Output records terminated by a null byte instead of a newline")
-		rjs    = fs.BoolP("json", "j", false, "Output JSON instead of text as defined by --format")
-		qlh    = fs.Bool("help-viql", false, "Show help on how to write query statements")
+
+		zero = fs.BoolP("zero", "0", false, "Output records terminated by a null byte instead of a newline")
+		rjs  = fs.BoolP("json", "j", false, "Output JSON instead of text as defined by --format")
+
+		qlh = fs.Bool("help-viql", false, "Show help on how to write query statements")
 	)
 
 	fs.BoolVarP(&i.cont, "continue", "c", i.cont, "Continue on errors")
@@ -168,3 +170,6 @@ func (i *vsInspector) marshalText(vi *viminfo.VimInfo) ([]byte, error) {
 	}
 	return b.Bytes(), nil
 }
+
+const vimStyleTmpl = `
+`

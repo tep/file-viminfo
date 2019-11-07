@@ -37,28 +37,46 @@ const (
 type VimInfo struct {
 	// SwapFile is the name of the file containing this information
 	SwapFile string `json:"swap_file,omitempty"`
+
+	// Owner is the user that owns this swap file
+	Owner string `json:"owner,omitempty"`
+
+	// SFMtime is the modification time for this swap file
+	SFMtime time.Time `json:"swap_file_last_mod,omitempty"`
+
 	// Version indicates which version of Vim wrote this swap file
 	Version string `json:"version,omitempty"`
+
 	// LastMod is the modification time for the file being edited
 	LastMod time.Time `json:"last_mod,omitempty"`
+
 	// Inode is the filesystem inode of the file being edited
 	Inode uint32 `json:"inode,omitempty"`
+
 	// PID is the process ID for the vim session editing the file
 	PID uint32 `json:"pid,omitempty"`
+
 	// User is the username for the vim session's process owner (or, UID of username is unavailable)
 	User string `json:"user,omitempty"`
+
 	// Hostname is the hostname where the vim session is/was running
 	Hostname string `json:"hostname,omitempty"`
+
 	// Filename reflects the name of the file being edited
 	Filename string `json:"filename,omitempty"`
+
 	// Encoding is the file encoding for the file being edited (or, the word "encrypted" if the file is encrypted)
 	Encoding string `json:"encoding,omitempty"`
+
 	// Crypto indicates the "cryptmethod" for the file being edited (or, "plaintext" if the file is not encrypted)
 	Crypto CryptMethod `json:"crypt_method,omitempty"`
+
 	// Format is the FileFormat for the edited file (e.g. unix, dos, mac)
 	Format FileFormat `json:"format,omitempty"`
+
 	// Modified indicates whether the edit session has unsaved changes
 	Modified bool `json:"modified"`
+
 	// SameDir indicates whether the edited file is in the same directory as the swap file
 	SameDir bool `json:"same_dir"`
 }
@@ -66,6 +84,11 @@ type VimInfo struct {
 // Parse reads and parses the vim swapfile specified by filename and returns
 // a populated *VimInfo, or an error if the file could not be parsed.
 func Parse(filename string) (*VimInfo, error) {
+	oi, err := fileOwner(filename)
+	if err != nil {
+		return nil, err
+	}
+
 	b0, err := readBlock0(filename)
 	if err != nil {
 		return nil, err
@@ -99,6 +122,8 @@ func Parse(filename string) (*VimInfo, error) {
 
 	vi := &VimInfo{
 		SwapFile: filepath.Clean(filename),
+		Owner:    oi.owner,
+		SFMtime:  oi.mtime,
 		Version:  b0.frontString(2, 8),
 		LastMod:  time.Unix(int64(b0.uint32At(16)), 0),
 		Inode:    b0.uint32At(20),
