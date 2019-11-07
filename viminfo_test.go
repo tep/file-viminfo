@@ -23,6 +23,7 @@
 package viminfo
 
 import (
+	// "os"
 	"reflect"
 	"testing"
 	"time"
@@ -31,8 +32,7 @@ import (
 )
 
 func TestVimInfo(t *testing.T) {
-	defer func(s func() (os.FileInfo, err)) { osStat = s }(osStat)
-
+	// defer func(s func() (os.FileInfo, err)) { osStat = s }(osStat)
 	file := "testdata/plain.swp"
 
 	want := &VimInfo{
@@ -59,5 +59,5 @@ func TestVimInfo(t *testing.T) {
 	}
 }
 
-func fakeFileInfo struct {
-}
+// func fakeFileInfo struct {
+// }
