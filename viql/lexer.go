@@ -99,24 +99,31 @@ func (lx *lexer) Lex(lval *yySymType) int {
 	case scanner.KeyWord:
 		kwtok := lx.scnr.Token()
 		switch kwtok {
+		// Operators
 		case AND, OR, NOT:
 			return kwtok
 
-		case MISSING, MODIFIED, RUNNING, THISHOST, THISUSER:
+		// Declarations
+		case ALL, MISSING, MODIFIED, NONE, RUNNING, THISHOST, THISUSER:
 			lval.decl = tokenDeclaration(int(kwtok))
 			return DECL
 
+		// Fields
 		case CRYPTMETHOD, FILEFORMAT, FILENAME, HOSTNAME, INODE, PID, USER:
 			lval.fld = tokenField(int(kwtok))
 			return FIELD
 
+		// File Formats
 		case FFDOS, FFMAC, FFUNIX:
 			lval.value = ffValue(int(kwtok))
 			return VALUE
 
+		// Crypt Methods
 		case CMBLOWFISH, CMBLOWFISH2, CMPLAINTEXT, CMZIP:
 			lval.value = cmValue(int(kwtok))
 			return VALUE
+
+		// Everything else is an error
 		default:
 			lx.err = fmt.Errorf("%s: unsupported keyword (this is a bug): %v %q", lx.scnr.Position(), lx.scnr.TokenString(rune(kwtok)), lx.scnr.Text())
 			return ERROR

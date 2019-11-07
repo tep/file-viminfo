@@ -8,20 +8,24 @@ import (
 const qlHelpText = `
 VIQL - The VimInfo Query Language
 
-Viql is a simple boolean query language for selecting VimInfo records as
-created by examining a Vim swapfile with 'toolman.org/file/viminfo'. Query
-statements are boolean expressions composed of declarations or comparisons
-combined with boolean operators -- for example:
+Viql is a simple boolean query language for selecting VimInfo records
+as created by examining a Vim swapfile with 'toolman.org/file/viminfo'.
+
+Query statements are boolean expressions composed of declarations or
+comparisons combined with boolean operators which are evaluated against
+a series of VimInfo structures to derive a boolean value.
+
+As an example:
 
     cryptmethod = plaintext and not(running or missing)
 
-...and are evaluated against VimInfo structures to derive a boolean value.
-
-In the above, 'cryptmethod = plaintext' is a comparison  while 'running'
-and 'missing' are declarations. Therefore, the above statement is true
-for VimInfo structs describing a plaintext file whose edit session is no
+Here, 'cryptmethod = plaintext' is a comparison  while 'running' and
+'missing' are declarations. Therefore, the above statement is true for
+VimInfo structs describing a plaintext file whose edit session is no
 longer running and it's associated file still exists. Otherwise, it
-returns false. See GRAMMAR below for the formal grammar specification.
+returns false.
+
+See GRAMMAR below for the formal grammar specification.
 
 
 DECLARATIONS
@@ -83,9 +87,9 @@ data or a limited set of values. For example, only string fields may be
 use with regular expression matches and the PID and Inode fields must be
 compared against an integer value.
 
-String values containing space must be double quoted otherwise no quoting
+String values containing spaces must be double quoted otherwise no quoting
 is required. Integer values and values for one of the enumerated fields
-(e.g. 'cryptmethod' or 'fileformat') should not be quoted.
+(e.g. 'cryptmethod' or 'fileformat') should NOT be quoted.
 
 The following list enumerates all supported fields and their associated
 value restrictions, if any:

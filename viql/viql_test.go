@@ -19,9 +19,8 @@ var test_viminfo = &viminfo.VimInfo{
 }
 
 func TestCompile(t *testing.T) {
-	yyDebug = 4
-	yyErrorVerbose = true
-	// args := []string{"user", "=", "dood", "and", "host", "=~", `/^foo\..*/`}
+	// yyDebug = 4
+	// yyErrorVerbose = true
 	args := []string{`user = dood and host =~ /^foo\\..*/`}
 	expr, err := Compile(args...)
 	if err != nil {
@@ -29,6 +28,6 @@ func TestCompile(t *testing.T) {
 	}
 
 	if got, err := expr.Evaluate(test_viminfo); err != nil || got != true {
-		t.Errorf("expr.Evaluate(_) == (%v,%v); Wanted(%v, %v)", got, err, true, nil)
+		t.Errorf("expr.Evaluate(_) == (%v, %v); Wanted(%v, %v)", got, err, true, nil)
 	}
 }
