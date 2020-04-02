@@ -1,7 +1,15 @@
-github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=
-github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
+github.com/kr/pretty v0.2.0 h1:s5hAObm+yFO5uHYt5dYjxi2rXrsnmRpJx4OYvIWUaQs=
+github.com/kr/pretty v0.2.0/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0 h1:45sCR5RtlFHMR4UwH9sdQ5TC8v0qDQCHnXt+kaKSTVE=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
+github.com/spf13/pflag v1.0.5 h1:iy+VFUOCP1a+8yFto/drg2CJ5u0yRoB7fZw3DKv/JXA=
+github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
 golang.org/x/sys v0.0.0-20191105231009-c1f44814a5cd h1:3x5uuvBgE6oaXJjCOvpCC1IpgJogqQ+PqGGU3ZxAgII=
 golang.org/x/sys v0.0.0-20191105231009-c1f44814a5cd/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+toolman.org/numbers/stdsize v1.0.3 h1:+DH70xFBT6kioyPX8u6XE/2OoHCDswI7JrlAlkKXu6g=
+toolman.org/numbers/stdsize v1.0.3/go.mod h1:40IL5Vh0BNApCGCRDajl3yxfCi4jynFltku7vdJMAzA=
+toolman.org/text/scanner v0.6.5 h1:U8OBZvUQNIeOy/W4pX9qtDMLCn69cm8tFoMHBUUgaxo=
+toolman.org/text/scanner v0.6.5/go.mod h1:Q7yj/CnCdyufjtxYczVTdfHeuEmQu86L7oxM5d8Z0Ww=
+toolman.org/time/timespan/v2 v2.1.2 h1:S8cUXBeD/DR3WC1hpWp/7K+uArOcKxvB750z4Xzw5Xw=
+toolman.org/time/timespan/v2 v2.1.2/go.mod h1:PI1YqKCbnwhQPhazFF3MbsdM3ArMm7hYFPtJmbOD9JE=

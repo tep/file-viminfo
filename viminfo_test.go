@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Timothy E. Peoples
+// Copyright 2020 Timothy E. Peoples
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to
@@ -23,7 +23,6 @@
 package viminfo
 
 import (
-	// "os"
 	"reflect"
 	"testing"
 	"time"
@@ -32,7 +31,6 @@ import (
 )
 
 func TestVimInfo(t *testing.T) {
-	// defer func(s func() (os.FileInfo, err)) { osStat = s }(osStat)
 	file := "testdata/plain.swp"
 
 	want := &VimInfo{
@@ -51,13 +49,23 @@ func TestVimInfo(t *testing.T) {
 		SameDir:  true,
 	}
 
-	if got, err := Parse(file); err != nil || !reflect.DeepEqual(got, want) {
+	parse := func(f string) (vi *VimInfo, err error) {
+		defer func() {
+			if vi != nil {
+				want.Owner = vi.Owner
+				want.SFMtime = vi.SFMtime
+			}
+		}()
+
+		return Parse(f)
+	}
+
+	if got, err := parse(file); err != nil || !reflect.DeepEqual(got, want) {
 		t.Errorf("Parse(%q) := (%#v, %v); Wanted (%#v, %v)", file, got, err, want, nil)
+		t.Logf("GOT: %s", pretty.Sprint(got))
+		t.Logf("WANTED: %s", pretty.Sprint(want))
 		for _, d := range pretty.Diff(got, want) {
 			t.Log(d)
 		}
 	}
 }
-
-// func fakeFileInfo struct {
-// }
